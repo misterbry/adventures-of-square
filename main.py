@@ -1,5 +1,5 @@
 import pygame
-import sys
+import platform
 
 class Player(object):
    def __init__(self):
@@ -15,6 +15,8 @@ class Player(object):
    def draw(self, game_screen):
       pygame.draw.rect(game_screen, self.color, self.player)
 
+os = platform.system()
+print("Operating system is: ", os)
 paused = False
 pygame.font.init()
 font = pygame.font.SysFont(pygame.font.get_default_font(), 48)
@@ -65,9 +67,10 @@ while running:
             
       if event.type == pygame.JOYAXISMOTION:
          print(event)
-
-   x_speed = round(pygame.joystick.Joystick(0).get_axis(3))
-   y_speed = round(pygame.joystick.Joystick(0).get_axis(4))
+   x_axis = 0 if os == "Linux" else 3
+   y_axis = 1 if os == "Linux" else 4
+   x_speed = round(pygame.joystick.Joystick(0).get_axis(x_axis))
+   y_speed = round(pygame.joystick.Joystick(0).get_axis(y_axis))
    player.move(x_speed, y_speed)
    
    screen.fill((0, 0, 0))
